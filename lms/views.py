@@ -32,7 +32,8 @@ def dashboard(request):
     is_instructor = request.user.role == 'instructor'
     if is_instructor:
         courses = Course.objects.filter(instructor=request.user)
-        total_students = sum(course.enrollments.count() for course in courses)
+        # Count unique students across all instructor's courses
+        total_students = Enrollment.objects.filter(course__instructor=request.user).values('student').distinct().count()
         return render(request, 'lms/instructor_dashboard.html', {'courses': courses, 'total_students': total_students})
     else:
         return render(request, 'lms/student_dashboard.html', {
