@@ -7,10 +7,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key")
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*", ".railway.app"]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.up.railway.app",
+    "https://*.railway.app",
 ]
 
 INSTALLED_APPS = [
@@ -55,25 +56,13 @@ WSGI_APPLICATION = "learning_pathway.wsgi.application"
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
-if DATABASE_URL:
-    DATABASES = {
-        "default": dj_database_url.config(
-            default=DATABASE_URL,
-            conn_max_age=600,
-            ssl_require=True,
-        )
-    }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "lms",
-            "USER": "postgres",
-            "PASSWORD": "Shon1234",
-            "HOST": "localhost",
-            "PORT": "5432",
-        }
-    }
+DATABASES = {
+    "default": dj_database_url.config(
+        default=DATABASE_URL,
+        conn_max_age=600,
+        ssl_require=False
+    )
+}
 
 AUTH_PASSWORD_VALIDATORS = []
 
