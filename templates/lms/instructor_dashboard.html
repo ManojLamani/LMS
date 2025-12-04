@@ -1,0 +1,45 @@
+{% extends 'lms/base.html' %}
+{% block content %}
+<h1 style="margin-bottom:30px">Instructor Dashboard</h1>
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 2h12a2 2 0 0 1 2 2v16a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 2v16h12V4H6zm2 2h8v2H8V6zm0 4h8v2H8v-2zm0 4h5v2H8v-2z"/></svg>
+        </div>
+        <div class="stat-label">TOTAL COURSES</div>
+        <div class="stat-value">{{ courses|length }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+        </div>
+        <div class="stat-label">TOTAL STUDENTS</div>
+        <div class="stat-value">{{ total_students }}</div>
+    </div>
+</div>
+<div class="card">
+    <h2>My Courses</h2>
+    <a href="{% url 'course_create' %}"><button>Create New Course</button></a>
+    {% if courses %}
+        <div class="course-grid" style="margin-top:20px">
+            {% for course in courses %}
+                <div class="course-card">
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.description }}</p>
+                    <small>Created: {{ course.created_at|date:"M d, Y" }}</small><br>
+                    <small>Students: {{ course.enrollments.count }}</small>
+                    <div style="margin-top:15px">
+                        <a href="{% url 'course_edit' course.id %}"><button style="margin-right:5px">Edit</button></a>
+                        <form method="post" action="{% url 'course_delete' course.id %}" style="display:inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-secondary" onclick="return confirm('Delete this course?')">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p style="margin-top:15px">You haven't created any courses yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

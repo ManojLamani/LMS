@@ -1,0 +1,14 @@
+{% extends 'lms/base.html' %}
+
+{% block content %}
+<div class="card" style="max-width: 600px; margin: 0 auto;">
+    <h2>{% if course %}Edit Course{% else %}Create Course{% endif %}</h2>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="title" value="{% if course %}{{ course.title }}{% endif %}" placeholder="Course Title" required>
+        <textarea name="description" rows="5" placeholder="Course Description" required>{% if course %}{{ course.description }}{% endif %}</textarea>
+        <button type="submit">{% if course %}Update{% else %}Create{% endif %} Course</button>
+        <a href="{% url 'dashboard' %}"><button type="button" class="btn-secondary">Cancel</button></a>
+    </form>
+</div>
+{% endblock %}
