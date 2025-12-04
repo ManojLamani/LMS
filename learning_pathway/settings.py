@@ -47,3 +47,9 @@ AUTH_USER_MODEL = 'lms.User'
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://lms-production-4996.up.railway.app',
+    'https://*.up.railway.app',
+]
+
